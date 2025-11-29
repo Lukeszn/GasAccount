@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36705.20 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GasAccount", "GasAccount\GasAccount.csproj", "{538BF38C-6964-4741-82F7-87F0D2FE994B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestGasAccountLogic", "UnitTestGasAccountLogic\UnitTestGasAccountLogic.csproj", "{F8C74302-C62A-4087-97F1-CD924CE384D5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{538BF38C-6964-4741-82F7-87F0D2FE994B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{538BF38C-6964-4741-82F7-87F0D2FE994B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{538BF38C-6964-4741-82F7-87F0D2FE994B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{538BF38C-6964-4741-82F7-87F0D2FE994B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8C74302-C62A-4087-97F1-CD924CE384D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8C74302-C62A-4087-97F1-CD924CE384D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8C74302-C62A-4087-97F1-CD924CE384D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8C74302-C62A-4087-97F1-CD924CE384D5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EA639FF4-E46D-4DA1-B186-8B2254D1C89D}
+	EndGlobalSection
+EndGlobal
