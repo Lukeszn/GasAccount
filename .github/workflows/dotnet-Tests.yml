@@ -43,23 +43,20 @@ jobs:
           --collect:"XPlat Code Coverage" \
           --results-directory ./TestResults/Coverage
     
-    - name: List generated files (debug)
+    - name: List generated files
       if: always()
       run: |
-        echo "=== TestResults directory ==="
-        find TestResults -type f 2>/dev/null || echo "No TestResults directory"
+        echo "=== Test Results ==="
+        find TestResults -name "*.trx" 2>/dev/null || echo "No TRX files"
         echo ""
-        echo "=== All TRX files ==="
-        find . -name "*.trx" -type f 2>/dev/null || echo "No TRX files found"
-        echo ""
-        echo "=== All coverage files ==="
-        find . -name "coverage.cobertura.xml" -type f 2>/dev/null || echo "No coverage files found"
+        echo "=== Coverage Files ==="
+        find TestResults -name "coverage.cobertura.xml" 2>/dev/null || echo "No coverage files"
     
     - name: Publish test results
       uses: dorny/test-reporter@v1
       if: always()
       with:
-        name: MSTest Results
+        name: Test Results
         path: 'TestResults/**/*.trx'
         reporter: dotnet-trx
         fail-on-error: false
@@ -78,29 +75,7 @@ jobs:
         output: both
         thresholds: '60 80'
     
-    - name: Add Coverage Comment to PR
-      uses: marocchino/sticky-pull-request-comment@v2
-      if: github.event_name == 'pull_request'
-      continue-on-error: true
-      with:
-        recreate: true
-        path: code-coverage-results.md
-    
-    - name: Generate Summary
-      if: always()
-      run: |
-        echo "## 🧪 Test Execution Summary" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        
-        if [ -f code-coverage-results.md ]; then
-          cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
-        else
-          echo "✅ Tests executed successfully" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "_Coverage report will be available when tests generate coverage data_" >> $GITHUB_STEP_SUMMARY
-        fi
-    
-    - name: Upload Test Results
+    - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
       with:
@@ -108,7 +83,7 @@ jobs:
         path: TestResults/**/*.trx
         if-no-files-found: warn
     
-    - name: Upload Coverage Results
+    - name: Upload coverage
       uses: actions/upload-artifact@v4
       if: always()
       with:
