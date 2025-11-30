@@ -7,6 +7,13 @@ on:
     branches: [ main, develop, master ]
   workflow_dispatch:
 
+# Add permissions for test reporter
+permissions:
+  contents: read
+  actions: read
+  checks: write
+  pull-requests: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -55,15 +62,17 @@ jobs:
     - name: Publish test results
       uses: dorny/test-reporter@v1
       if: always()
+      continue-on-error: true
       with:
         name: Test Results
         path: 'TestResults/**/*.trx'
         reporter: dotnet-trx
         fail-on-error: false
     
-    - name: Code Coverage Report
+    - name: Code Coverage Summary
       uses: irongut/CodeCoverageSummary@v1.3.0
       if: always()
+      continue-on-error: true
       with:
         filename: 'TestResults/Coverage/**/coverage.cobertura.xml'
         badge: true
@@ -74,6 +83,35 @@ jobs:
         indicators: true
         output: both
         thresholds: '60 80'
+    
+    - name: Generate test summary
+      if: always()
+      run: |
+        echo "## 🧪 Test Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        # Count TRX files
+        TRX_COUNT=$(find TestResults -name "*.trx" 2>/dev/null | wc -l)
+        if [ $TRX_COUNT -gt 0 ]; then
+          echo "✅ **Tests executed successfully**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Test result files generated: $TRX_COUNT" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "⚠️ **No test results found**" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        # Add coverage if available
+        if [ -f code-coverage-results.md ]; then
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "---" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "📦 Artifacts available for download in workflow run details." >> $GITHUB_STEP_SUMMARY
     
     - name: Upload test results
       uses: actions/upload-artifact@v4
